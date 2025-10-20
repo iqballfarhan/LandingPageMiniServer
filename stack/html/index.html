@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Server • Iqbal</title>
+  <meta name="description" content="Landing page layanan mini server Ubuntu milik Iqbal" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%230ea5e9'/%3E%3Cpath d='M50 20a30 30 0 100 60 30 30 0 000-60zm0 10a20 20 0 110 40 20 20 0 010-40z' fill='white'/%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root { --card: 255 255 255; --card-foreground: 15 23 42; }
+    @media (prefers-color-scheme: dark) { :root { --card: 15 23 42; --card-foreground: 241 245 249; } }
+    .glass { backdrop-filter: saturate(180%) blur(10px); background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06)); }
+  </style>
+  <script>
+    (function(){
+      try {
+        const hasSession = sessionStorage.getItem('auth') === 'ok';
+        const hasLocal = localStorage.getItem('auth') === 'ok' && Number(localStorage.getItem('auth_exp')||0) > Date.now();
+        if (!(hasSession || hasLocal)) window.location.replace('login.html');
+      } catch(e) { window.location.replace('login.html'); }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900/20 via-slate-900 to-slate-950">
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/70 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="flex items-center gap-3">
+        <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l8.66 5v8L12 21 3.34 16V8L12 3z"/><path d="M12 3v18"/></svg>
+        <div>
+          <h1 class="text-xl font-semibold tracking-tight">Ubuntu Mini Server</h1>
+          <p class="text-xs text-slate-300">Landing page layanan & utilitas</p>
+        </div>
+      </div>
+      <div class="flex gap-2 items-center">
+        <input id="search" type="search" placeholder="Cari layanan… ( / )" class="w-64 md:w-80 px-3 py-2 rounded-xl bg-slate-800/70 border border-white/10 outline-none focus:ring-2 focus:ring-sky-500" />
+        <button id="refresh" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 active:translate-y-px transition">Refresh status</button>
+        <a href="login.html" class="text-xs text-slate-300 hover:text-sky-300 underline ml-2" onclick="localStorage.removeItem('auth'); localStorage.removeItem('auth_exp'); sessionStorage.removeItem('auth');">Keluar</a>
+      </div>
+    </div>
+  </header>
+  <section class="max-w-6xl mx-auto px-4">
+    <div class="mt-6 p-4 rounded-2xl border border-white/10 glass">
+      <p class="text-sm leading-6 text-slate-300">
+        Gunakan tombol <span class="px-2 py-0.5 rounded bg-slate-700 text-slate-200">Open</span> untuk membuka layanan, atau
+        <span class="px-2 py-0.5 rounded bg-slate-700 text-slate-200">Copy</span> untuk menyalin URL. Kolom <em>Status</em> melakukan pengecekan ringan (favicon/root) tanpa autentikasi.
+      </p>
+    </div>
+  </section>
+  <main class="max-w-6xl mx-auto px-4">
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-6"></div>
+  </main>
+  <footer class="max-w-6xl mx-auto px-4 pb-10 text-xs text-slate-400">
+    <div class="flex flex-wrap items-center gap-2">
+      <span>© <span id="y"></span> Iqbal • Mini Server</span>
+      <span aria-hidden>•</span><span>Dark-mode otomatis</span>
+      <span aria-hidden>•</span><span>Editable via JSON di file ini</span>
+    </div>
+  </footer>
+  <template id="card-template">
+    <article class="group rounded-2xl border border-white/10 bg-slate-900/60 p-4 hover:border-sky-600/60 transition">
+      <div class="flex items-start gap-3">
+        <div class="shrink-0 w-11 h-11 rounded-xl bg-slate-800/80 grid place-items-center border border-white/10">
+          <span class="icon text-xl">🔗</span>
+        </div>
+        <div class="min-w-0 grow">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="text-base font-semibold leading-tight truncate"></h3>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium border border-white/10 bg-slate-800/60 tag"></span>
+          </div>
+          <p class="text-sm mt-1 text-slate-300 line-clamp-2 desc"></p>
+          <a class="block text-xs mt-1 text-sky-400 hover:underline url" target="_blank" rel="noopener"></a>
+          <div class="mt-3 flex items-center gap-2">
+            <button class="open px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 transition text-sm">Open</button>
+            <button class="copy px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-white/10 transition text-sm">Copy</button>
+            <span class="ml-auto text-xs rounded-full px-2 py-0.5 border border-white/10 bg-slate-800/60 status">Checking…</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  </template>
+  <script>
+    const LINKS = [
+      { name: "Portainer (LAN)", url: "http://192.168.1.17:9000/#!/auth", desc: "UI manajemen Docker lokal. Akses hanya dari jaringan lokal.", icon: "🛠️", tag: "LAN", ping: "/favicon.ico" },
+      { name: "Portainer (Domain)", url: "https://portainer.iqballfarhan.web.id/#!/auth", desc: "UI Portainer via domain & reverse proxy.", icon: "🗂️", tag: "Public", ping: "/favicon.ico" },
+      { name: "Twitch Drop Miner #1", url: "https://twitchdrop.iqballfarhan.web.id/", desc: "Instance 1 untuk Twitch Drops miner (Docker).", icon: "🎮", tag: "Public", ping: "/" },
+      { name: "Twitch Drop Miner #2", url: "https://twitchdrop2.iqballfarhan.web.id/", desc: "Instance 2 untuk Twitch Drops miner (Docker).", icon: "🕹️", tag: "Public", ping: "/" },
+      { name: "Bekgor", url: "https://bekgor.iqballfarhan.web.id/", desc: "Aplikasi/Service internal 'Bekgor'.", icon: "📦", tag: "Public", ping: "/" },
+      { name: "Beszel", url: "https://beszel.iqballfarhan.web.id/", desc: "Beszel server: monitoring & kontrol container.", icon: "📈", tag: "Public", ping: "/" },
+      { name: "Speedtest", url: "https://speedtest.iqballfarhan.web.id/", desc: "LibreSpeed / speedtest mandiri untuk jaringan.", icon: "🚀", tag: "Public", ping: "/" },
+      { name: "Cloudflare Tunnel Dashboard", url: "https://one.dash.cloudflare.com/64c507993f50bbbaca60d7df59e7486e/networks/tunnels", desc: "Panel Cloudflare Zero Trust • manajemen Argo Tunnel.", icon: "☁️", tag: "Cloud", ping: "/" }
+    ];
+
+    const grid = document.getElementById('grid');
+    const tpl = document.getElementById('card-template');
+
+    function render(list) {
+      grid.innerHTML = '';
+      list.forEach((item) => {
+        const node = tpl.content.cloneNode(true);
+        node.querySelector('.icon').textContent = item.icon || '🔗';
+        node.querySelector('h3').textContent = item.name;
+        node.querySelector('.desc').textContent = item.desc || '';
+        node.querySelector('.url').textContent = item.url;
+        node.querySelector('.url').href = item.url;
+        node.querySelector('.tag').textContent = item.tag || 'Service';
+        const openBtn = node.querySelector('.open');
+        const copyBtn = node.querySelector('.copy');
+        const statusEl = node.querySelector('.status');
+
+        openBtn.addEventListener('click', () => window.open(item.url, '_blank', 'noopener'));
+        copyBtn.addEventListener('click', async () => {
+          try { await navigator.clipboard.writeText(item.url); copyBtn.textContent = 'Copied'; setTimeout(()=>copyBtn.textContent='Copy', 1200);} catch(e){ alert('Clipboard tidak tersedia: ' + e); }
+        });
+
+        function check() {
+          statusEl.textContent = 'Checking…';
+          const img = new Image();
+          const u = new URL(item.url);
+          const probe = item.ping || '/favicon.ico';
+          img.src = u.origin + probe + (probe.includes('?') ? '&' : '?') + 't=' + Date.now();
+          const timer = setTimeout(()=> { statusEl.textContent = 'Timeout'; statusEl.className = statusEl.className.replace('bg-emerald-800','bg-slate-800'); }, 4500);
+          img.onload = () => { clearTimeout(timer); statusEl.textContent = 'Online'; statusEl.classList.add('bg-emerald-800'); };
+          img.onerror = () => { clearTimeout(timer); statusEl.textContent = 'Uncertain'; statusEl.title = 'Bisa saja butuh login atau CORS. Coba tombol Open.'; };
+        }
+        check();
+
+        grid.appendChild(node);
+      });
+    }
+    render(LINKS);
+
+    const input = document.getElementById('search');
+    input?.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const filtered = LINKS.filter(x => [x.name, x.desc, x.url, x.tag].join(' ').toLowerCase().includes(q));
+      render(filtered);
+    });
+    window.addEventListener('keydown', (e) => { if (e.key === '/') { e.preventDefault(); document.getElementById('search')?.focus(); } });
+
+    document.getElementById('refresh').addEventListener('click', () => {
+      const q = document.getElementById('search').value.toLowerCase().trim();
+      const filtered = LINKS.filter(x => [x.name, x.desc, x.url, x.tag].join(' ').toLowerCase().includes(q));
+      render(filtered);
+    });
+
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
