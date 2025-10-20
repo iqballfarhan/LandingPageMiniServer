@@ -273,7 +273,7 @@
     });
 
     // Set copyright year otomatis
-    document.getElementById('copyright').textContent = `© IqballFarhan ${new Date().getFullYear()}`;
+    document.getElementById('copyright').innerHTML = `© <a href="https://www.instagram.com/iqballfarhan/" target="_blank" class="hover:text-sky-400 transition">IqballFarhan</a> ${new Date().getFullYear()}`;
 
     // Logout
     document.getElementById('logout').addEventListener('click', () => {
