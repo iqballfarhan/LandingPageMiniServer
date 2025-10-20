@@ -23,10 +23,16 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
-    /* Logo Pulse Animation */
-    @keyframes logoPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+    /* Logo Rotation with Glow */
+    @keyframes logoGlow {
+      0%, 100% { 
+        transform: rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 20px rgba(234,88,12,0.6));
+      }
+      50% { 
+        transform: rotate(180deg) scale(1.1);
+        filter: drop-shadow(0 0 30px rgba(234,88,12,0.9));
+      }
     }
     
     /* Shake Animation for Error */
@@ -43,7 +49,7 @@
     }
     
     body { animation: pageLoad 0.6s ease-out; }
-    .logo-animate { animation: logoPulse 2s ease-in-out infinite; }
+    .logo-animate { animation: logoGlow 4s ease-in-out infinite; }
     .fade-in-1 { animation: fadeInUp 0.8s ease-out 0.2s both; }
     .fade-in-2 { animation: fadeInUp 0.8s ease-out 0.4s both; }
     .fade-in-3 { animation: fadeInUp 0.8s ease-out 0.6s both; }
@@ -82,7 +88,7 @@
         <img 
           src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" 
           alt="Ubuntu Logo"
-          class="w-16 h-16 mx-auto drop-shadow-[0_0_20px_rgba(234,88,12,0.6)] logo-animate"
+          class="w-16 h-16 mx-auto logo-animate"
         />
       </div>
 
