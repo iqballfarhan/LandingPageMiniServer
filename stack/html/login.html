@@ -161,6 +161,63 @@
       font-size: 14px;
       animation: pulse 1.5s ease-in-out infinite;
     }
+    
+    /* Modern Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      min-width: 300px;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(220, 38, 38, 0.95));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateX(400px);
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .toast.show {
+      transform: translateX(0);
+    }
+    
+    .toast-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    
+    .toast-content {
+      flex: 1;
+    }
+    
+    .toast-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: white;
+    }
+    
+    .toast-message {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .toast-close {
+      cursor: pointer;
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      transition: color 0.2s;
+      flex-shrink: 0;
+    }
+    
+    .toast-close:hover {
+      color: white;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900/20 via-slate-900 to-slate-950">
@@ -210,7 +267,6 @@
           <button id="show" type="button" class="text-xs text-slate-300 hover:text-sky-300">Tampilkan password</button>
         </div>
         <button id="submit" class="w-full px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 transition">Masuk</button>
-        <p id="err" class="text-xs text-rose-400 min-h-5"></p>
       </form>
 
       <!-- Footer -->
@@ -223,9 +279,46 @@
     const PASS = "16021998";
     const u = document.getElementById('u');
     const p = document.getElementById('p');
-    const err = document.getElementById('err');
     const remember = document.getElementById('remember');
     const show = document.getElementById('show');
+    
+    // Modern Toast Notification Function
+    function showToast(title, message) {
+      // Remove existing toast if any
+      const existingToast = document.querySelector('.toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+      
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <span class="toast-icon">⚠️</span>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <span class="toast-close">×</span>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // Show toast with animation
+      setTimeout(() => toast.classList.add('show'), 10);
+      
+      // Close button handler
+      toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      });
+      
+      // Auto hide after 4 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }, 4000);
+    }
 
     // Set copyright year otomatis
     document.getElementById('copyright').innerHTML = `© <a href="https://www.instagram.com/iqballfarhan/" target="_blank" class="hover:text-sky-400 transition">IqballFarhan</a> ${new Date().getFullYear()}`;
@@ -325,15 +418,14 @@
     function isValid(uval, pval) { return uval === USER && pval === PASS; }
 
     document.getElementById('submit').addEventListener('click', () => {
-      err.textContent = '';
-      err.classList.remove('shake');
       const uval = u.value.trim();
       const pval = p.value;
+      
       if (!uval || !pval) { 
-        err.textContent = 'Lengkapi username & password.'; 
-        err.classList.add('shake');
+        showToast('Login Gagal', 'Lengkapi username & password.');
         return; 
       }
+      
       if (isValid(uval, pval)) {
         if (remember.checked) setAuth(7); else setAuth(0);
         // Add transition effect before redirect
@@ -343,8 +435,7 @@
           window.location.href = 'index.html';
         }, 300);
       } else {
-        err.textContent = 'Username atau password salah.';
-        err.classList.add('shake');
+        showToast('Login Gagal', 'Username atau password salah.');
       }
     });
   </script>
