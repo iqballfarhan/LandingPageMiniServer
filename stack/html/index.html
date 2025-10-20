@@ -136,7 +136,7 @@
     <!-- LOGOUT BUTTON -->
     <section class="max-w-5xl mx-auto w-full mt-10 footer-animate">
       <button id="logout" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-3 rounded-xl text-sm font-semibold transition glass border border-white/10">Logout</button>
-      <p class="text-[11px] text-slate-500 text-center mt-5">© IqballFarhan 2025</p>
+      <p id="copyright" class="text-[11px] text-slate-500 text-center mt-5"></p>
     </section>
   </main>
 
@@ -183,6 +183,9 @@
         .then(() => document.getElementById(`ping-${link.name.replace(/\W/g,'')}`).classList.add('bg-green-500','dot'))
         .catch(() => document.getElementById(`ping-${link.name.replace(/\W/g,'')}`).classList.add('bg-rose-500'));
     });
+
+    // Set copyright year otomatis
+    document.getElementById('copyright').textContent = `© IqballFarhan ${new Date().getFullYear()}`;
 
     // Logout
     document.getElementById('logout').addEventListener('click', () => {

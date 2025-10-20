@@ -120,7 +120,7 @@
       </form>
 
       <!-- Footer -->
-      <p class="text-[11px] text-slate-500 mt-6 text-center tracking-wide">© IqballFarhan 2025</p>
+  <p id="copyright" class="text-[11px] text-slate-500 mt-6 text-center tracking-wide"></p>
     </div>
   </main>
 
@@ -132,6 +132,9 @@
     const err = document.getElementById('err');
     const remember = document.getElementById('remember');
     const show = document.getElementById('show');
+
+    // Set copyright year otomatis
+    document.getElementById('copyright').textContent = `© IqballFarhan ${new Date().getFullYear()}`;
 
     show.addEventListener('click', () => { p.type = p.type === 'password' ? 'text' : 'password'; });
 
