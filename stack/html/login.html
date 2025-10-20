@@ -257,14 +257,28 @@
         </div>
         <div>
           <label class="block text-sm mb-1">Password</label>
-          <input id="p" type="password" class="w-full px-3 py-2 rounded-xl bg-slate-800/70 border border-white/10 outline-none focus:ring-2 focus:ring-sky-500" placeholder="Kepo banget !" autocomplete="current-password">
+          <div class="relative">
+            <input id="p" type="password" class="w-full pr-10 px-3 py-2 rounded-xl bg-slate-800/70 border border-white/10 outline-none focus:ring-2 focus:ring-sky-500" placeholder="Kepo banget !" autocomplete="current-password">
+            <button id="togglePass" type="button" aria-label="Tampilkan password" class="absolute inset-y-0 right-2 my-auto text-slate-300 hover:text-sky-300 transition">
+              <!-- eye icon -->
+              <svg id="eye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <!-- eye-off icon (hidden default) -->
+              <svg id="eyeOff" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 3l18 18"/>
+                <path d="M10.58 10.58A3 3 0 0015 12m6-0c-1.5 2.5-5 6-9 6-1.59 0-3.09-.46-4.39-1.26M6.6 6.6C8 5.8 9.5 5.33 11 5.33c4 0 7.5 3.5 9 6-.42.7-1.02 1.5-1.76 2.3"/>
+              </svg>
+            </button>
+          </div>
         </div>
-        <div class="flex items-center justify-between">
-          <label class="inline-flex items-center gap-2 text-xs">
+        <div class="flex items-center justify-between text-xs">
+          <label class="inline-flex items-center gap-2">
             <input id="remember" type="checkbox" class="accent-sky-500">
             Ingat saya (7 hari)
           </label>
-          <button id="show" type="button" class="text-xs text-slate-300 hover:text-sky-300">Tampilkan password</button>
+          <button id="forgot" type="button" class="text-slate-300 hover:text-sky-300">Lupa password?</button>
         </div>
         <button id="submit" class="w-full px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 transition">Masuk</button>
       </form>
@@ -279,8 +293,11 @@
     const PASS = "16021998";
     const u = document.getElementById('u');
     const p = document.getElementById('p');
-    const remember = document.getElementById('remember');
-    const show = document.getElementById('show');
+  const remember = document.getElementById('remember');
+  const togglePass = document.getElementById('togglePass');
+  const eye = document.getElementById('eye');
+  const eyeOff = document.getElementById('eyeOff');
+  const forgot = document.getElementById('forgot');
     
     // Modern Toast Notification Function
     function showToast(title, message) {
@@ -400,7 +417,18 @@
       }, 1500);
     });
 
-    show.addEventListener('click', () => { p.type = p.type === 'password' ? 'text' : 'password'; });
+    // Toggle password show/hide
+    togglePass.addEventListener('click', () => {
+      const isHidden = p.type === 'password';
+      p.type = isHidden ? 'text' : 'password';
+      eye.classList.toggle('hidden', !isHidden);
+      eyeOff.classList.toggle('hidden', isHidden);
+    });
+
+    // Forgot password toast
+    forgot.addEventListener('click', () => {
+      showToast('Lupa Password?', 'Jangan kepo, ini web pribadi.');
+    });
 
     function setAuth(days) {
       const token = 'ok';
