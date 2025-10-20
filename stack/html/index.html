@@ -141,6 +141,10 @@
   </main>
 
   <script>
+    // Check for authentication
+    if (!sessionStorage.getItem('auth') && !localStorage.getItem('auth')) {
+      window.location.href = 'login.html';
+    }
     const LINKS = [
       { name: "Twitch Drop Miner #1", url: "https://twitchdrop.iqballfarhan.web.id/", desc: "EndlessKnight", icon: "🎮", tag: "Public", ping: "/" },
       { name: "Twitch Drop Miner #2", url: "https://twitchdrop2.iqballfarhan.web.id/", desc: "IqballFarhan", icon: "🎮", tag: "Public", ping: "/" },
