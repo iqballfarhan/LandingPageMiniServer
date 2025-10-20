@@ -134,9 +134,86 @@
       position: relative;
       z-index: 1;
     }
+    
+    /* Modern Loading Screen */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    }
+    
+    #loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    /* Spinning Logo */
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .loading-logo {
+      animation: spin 1.5s linear infinite;
+      filter: drop-shadow(0 0 30px rgba(234,88,12,0.8));
+    }
+    
+    /* Loading Progress Bar */
+    @keyframes progress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    
+    .progress-bar {
+      width: 200px;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 30px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      border-radius: 10px;
+      animation: progress 1.5s ease-out;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+    
+    /* Loading Text */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .loading-text {
+      margin-top: 20px;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900/20 via-slate-900 to-slate-950">
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" alt="Loading" class="w-20 h-20 loading-logo">
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    <p class="loading-text">Loading Dashboard...</p>
+  </div>
+  
   <canvas id="stars-canvas"></canvas>
 
   <main class="min-h-screen px-4 py-10 flex flex-col justify-between">
@@ -231,6 +308,13 @@
     window.addEventListener('resize', () => {
       resizeCanvas();
       initStars();
+    });
+    
+    // Hide loading screen after page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loading-screen').classList.add('hidden');
+      }, 1500);
     });
     
     const LINKS = [
