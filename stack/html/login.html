@@ -77,9 +77,26 @@
       width: 300px;
       height: 300px;
     }
+    
+    /* Stars Background */
+    #stars-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    main {
+      position: relative;
+      z-index: 1;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900/20 via-slate-900 to-slate-950">
+  <canvas id="stars-canvas"></canvas>
   <main class="min-h-screen grid place-items-center px-4">
     <div class="w-full max-w-md glass glass-card border border-white/10 rounded-2xl p-6 text-center">
       
@@ -135,6 +152,76 @@
 
     // Set copyright year otomatis
     document.getElementById('copyright').textContent = `© IqballFarhan ${new Date().getFullYear()}`;
+
+    // Stars Animation
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    
+    class Star {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random();
+        this.opacityChange = (Math.random() - 0.5) * 0.02;
+      }
+      
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.opacity += this.opacityChange;
+        
+        if (this.opacity <= 0 || this.opacity >= 1) {
+          this.opacityChange *= -1;
+        }
+        
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+      }
+      
+      draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    
+    function initStars() {
+      stars = [];
+      const starCount = Math.floor((canvas.width * canvas.height) / 8000);
+      for (let i = 0; i < starCount; i++) {
+        stars.push(new Star());
+      }
+    }
+    
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+    
+    resizeCanvas();
+    initStars();
+    animate();
+    
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      initStars();
+    });
 
     show.addEventListener('click', () => { p.type = p.type === 'password' ? 'text' : 'password'; });
 
