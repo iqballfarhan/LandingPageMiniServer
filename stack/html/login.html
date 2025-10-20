@@ -3,37 +3,97 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login • Mini Server</title>
+  <title>Mini Server Iqballfarhan</title>
+  <link rel="icon" type="image/png" href="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <meta name="color-scheme" content="dark light" />
   <style>
     html, body { height:100%; }
     .glass { backdrop-filter: saturate(180%) blur(10px); background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06)); }
-    @keyframes fadeIn { from {opacity: 0; transform: translateY(-10px);} to {opacity: 1; transform: translateY(0);} }
-    .fade-in { animation: fadeIn 1s ease-out both; }
+    
+    /* Page Load Animation */
+    @keyframes pageLoad {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Fade In with Slide Up */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Logo Pulse Animation */
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    /* Shake Animation for Error */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    /* Float Animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    body { animation: pageLoad 0.6s ease-out; }
+    .logo-animate { animation: logoPulse 2s ease-in-out infinite; }
+    .fade-in-1 { animation: fadeInUp 0.8s ease-out 0.2s both; }
+    .fade-in-2 { animation: fadeInUp 0.8s ease-out 0.4s both; }
+    .fade-in-3 { animation: fadeInUp 0.8s ease-out 0.6s both; }
+    .shake { animation: shake 0.5s ease-in-out; }
+    .glass-card { animation: fadeInUp 0.8s ease-out, float 6s ease-in-out infinite 1s; }
+    
+    /* Button Hover Effect */
+    button[type="submit"] {
+      position: relative;
+      overflow: hidden;
+    }
+    button[type="submit"]::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    button[type="submit"]:hover::before {
+      width: 300px;
+      height: 300px;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900/20 via-slate-900 to-slate-950">
   <main class="min-h-screen grid place-items-center px-4">
-    <div class="w-full max-w-md glass border border-white/10 rounded-2xl p-6 text-center">
+    <div class="w-full max-w-md glass glass-card border border-white/10 rounded-2xl p-6 text-center">
       
       <!-- Ubuntu Logo -->
-      <div class="mb-4 fade-in">
+      <div class="mb-4 fade-in-1">
         <img 
           src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" 
           alt="Ubuntu Logo"
-          class="w-16 h-16 mx-auto drop-shadow-[0_0_20px_rgba(234,88,12,0.6)]"
+          class="w-16 h-16 mx-auto drop-shadow-[0_0_20px_rgba(234,88,12,0.6)] logo-animate"
         />
       </div>
 
       <!-- Title & Description -->
-      <div class="mb-6 fade-in">
+      <div class="mb-6 fade-in-2">
         <h1 class="text-xl font-semibold text-sky-100">Login Mini Server</h1>
         <p class="text-xs text-slate-400 mt-1">Masuk untuk akses landing page layanan</p>
       </div>
 
       <!-- Login Form -->
-      <form id="form" class="space-y-3 text-left fade-in" onsubmit="return false;">
+      <form id="form" class="space-y-3 text-left fade-in-3" onsubmit="return false;">
         <div>
           <label class="block text-sm mb-1">Username</label>
           <input id="u" type="text" class="w-full px-3 py-2 rounded-xl bg-slate-800/70 border border-white/10 outline-none focus:ring-2 focus:ring-sky-500" placeholder="ih Keponyee" autocomplete="username">
@@ -86,14 +146,25 @@
 
     document.getElementById('submit').addEventListener('click', () => {
       err.textContent = '';
+      err.classList.remove('shake');
       const uval = u.value.trim();
       const pval = p.value;
-      if (!uval || !pval) { err.textContent = 'Lengkapi username & password.'; return; }
+      if (!uval || !pval) { 
+        err.textContent = 'Lengkapi username & password.'; 
+        err.classList.add('shake');
+        return; 
+      }
       if (isValid(uval, pval)) {
         if (remember.checked) setAuth(7); else setAuth(0);
-        window.location.href = 'index.html';
+        // Add transition effect before redirect
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-out';
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 300);
       } else {
         err.textContent = 'Username atau password salah.';
+        err.classList.add('shake');
       }
     });
   </script>

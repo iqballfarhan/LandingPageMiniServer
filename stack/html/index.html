@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mini Server • Dashboard</title>
+  <link rel="icon" type="image/png" href="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <meta name="color-scheme" content="dark light" />
   <style>
@@ -13,14 +14,118 @@
     @keyframes ping { 0% {transform: scale(1); opacity: 1;} 75%,100% {transform: scale(2); opacity: 0;} }
     .dot { position: relative; }
     .dot::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; border-radius:50%; background:currentColor; opacity:.4; animation:ping 1.5s infinite; }
+    
+    /* Page Load Animation */
+    @keyframes pageLoad {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Fade In with Scale */
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Slide In from Bottom */
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Logo Rotation with Glow */
+    @keyframes logoGlow {
+      0%, 100% { 
+        transform: rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 15px rgba(234,88,12,0.5));
+      }
+      50% { 
+        transform: rotate(180deg) scale(1.1);
+        filter: drop-shadow(0 0 25px rgba(234,88,12,0.8));
+      }
+    }
+    
+    /* Card Hover Scale */
+    .glass:hover {
+      transform: translateY(-5px) scale(1.02);
+      transition: all 0.3s ease;
+    }
+    
+    /* Staggered Card Animation */
+    @keyframes cardSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px) rotateX(-10deg);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+    
+    body { 
+      animation: pageLoad 0.5s ease-out;
+    }
+    
+    .header-animate {
+      animation: fadeInScale 0.8s ease-out;
+    }
+    
+    .logo-rotate {
+      animation: logoGlow 4s ease-in-out infinite;
+    }
+    
+    .card-animate {
+      opacity: 0;
+      animation: cardSlideIn 0.6s ease-out forwards;
+    }
+    
+    /* Individual card delays */
+    .card-animate:nth-child(1) { animation-delay: 0.1s; }
+    .card-animate:nth-child(2) { animation-delay: 0.2s; }
+    .card-animate:nth-child(3) { animation-delay: 0.3s; }
+    .card-animate:nth-child(4) { animation-delay: 0.4s; }
+    .card-animate:nth-child(5) { animation-delay: 0.5s; }
+    .card-animate:nth-child(6) { animation-delay: 0.6s; }
+    .card-animate:nth-child(7) { animation-delay: 0.7s; }
+    .card-animate:nth-child(8) { animation-delay: 0.8s; }
+    .card-animate:nth-child(9) { animation-delay: 0.9s; }
+    
+    .footer-animate {
+      animation: slideInUp 0.8s ease-out 1s both;
+    }
+    
+    /* Button ripple effect */
+    #logout {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #logout::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    #logout:hover::before {
+      width: 400px;
+      height: 400px;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900/20 via-slate-900 to-slate-950">
 
   <main class="min-h-screen px-4 py-10 flex flex-col justify-between">
     <!-- HEADER -->
-    <section class="text-center mb-10">
-      <img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" alt="Ubuntu Logo" class="w-16 h-16 mx-auto mb-3 drop-shadow-[0_0_15px_rgba(234,88,12,0.5)]">
+    <section class="text-center mb-10 header-animate">
+      <img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" alt="Ubuntu Logo" class="w-16 h-16 mx-auto mb-3 logo-rotate">
       <h1 class="text-2xl font-semibold text-sky-100">Mini Server Dashboard</h1>
       <p class="text-sm text-slate-400 mt-1">Kumpulan layanan aktif di server Ubuntu • by IqballFarhan</p>
     </section>
@@ -29,7 +134,7 @@
     <section id="links" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto w-full"></section>
 
     <!-- LOGOUT BUTTON -->
-    <section class="max-w-5xl mx-auto w-full mt-10">
+    <section class="max-w-5xl mx-auto w-full mt-10 footer-animate">
       <button id="logout" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-3 rounded-xl text-sm font-semibold transition glass border border-white/10">Logout</button>
       <p class="text-[11px] text-slate-500 text-center mt-5">© IqballFarhan 2025</p>
     </section>
@@ -52,7 +157,7 @@
 
     LINKS.forEach(link => {
       const div = document.createElement('div');
-      div.className = "glass rounded-2xl p-5 border border-white/10 hover:border-sky-500/50 transition cursor-pointer text-left flex flex-col justify-between";
+      div.className = "glass rounded-2xl p-5 border border-white/10 hover:border-sky-500/50 transition cursor-pointer text-left flex flex-col justify-between card-animate";
       div.innerHTML = `
         <div>
           <div class="flex items-center justify-between mb-2">
@@ -77,10 +182,16 @@
 
     // Logout
     document.getElementById('logout').addEventListener('click', () => {
-      localStorage.removeItem('auth');
-      localStorage.removeItem('auth_exp');
-      sessionStorage.removeItem('auth');
-      window.location.href = 'login.html';
+      // Add fade out animation
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.3s ease-out';
+      
+      setTimeout(() => {
+        localStorage.removeItem('auth');
+        localStorage.removeItem('auth_exp');
+        sessionStorage.removeItem('auth');
+        window.location.href = 'login.html';
+      }, 300);
     });
   </script>
 </body>
