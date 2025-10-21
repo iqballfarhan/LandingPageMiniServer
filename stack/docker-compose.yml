@@ -8,13 +8,18 @@ services:
     ports:
       - "100:80"
     command: >
-      /bin/sh -c "
-      apk add --no-cache git &&
-      rm -rf /usr/share/nginx/html/* &&
-      git clone https://github.com/iqballfarhan/LandingPageMiniServer.git /tmp/repo &&
-      cp -r /tmp/repo/stack/html/* /usr/share/nginx/html/ &&
-      rm -rf /tmp/repo &&
-      nginx -g 'daemon off;'
+      sh -c "
+      mkdir -p /usr/share/nginx/html/css /usr/share/nginx/html/js &&
+      wget -q -O /usr/share/nginx/html/index.html https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/index.html &&
+      wget -q -O /usr/share/nginx/html/login.html https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/login.html &&
+      wget -q -O /usr/share/nginx/html/index-new.html https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/index-new.html &&
+      wget -q -O /usr/share/nginx/html/css/index-old.css https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/css/index-old.css &&
+      wget -q -O /usr/share/nginx/html/css/index-new.css https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/css/index-new.css &&
+      wget -q -O /usr/share/nginx/html/css/login.css https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/css/login.css &&
+      wget -q -O /usr/share/nginx/html/js/index-old.js https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/js/index-old.js &&
+      wget -q -O /usr/share/nginx/html/js/index-new.js https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/js/index-new.js &&
+      wget -q -O /usr/share/nginx/html/js/login.js https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/js/login.js &&
+      exec nginx -g 'daemon off;'
       "
     networks:
       - webnet
