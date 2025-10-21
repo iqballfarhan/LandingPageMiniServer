@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Server • Dashboard Pro</title>
+  <link rel="icon" type="image/png" href="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" />
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="css/dashboard.css" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen">
+  
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" 
+         alt="Loading" 
+         class="w-20 h-20 loading-logo logo-glow">
+    <div class="progress-container">
+      <div class="progress-bar-fill"></div>
+    </div>
+    <p class="loading-text">
+      Loading Dashboard...
+    </p>
+  </div>
+
+  <!-- Stars Background Canvas -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- Settings Panel -->
+  <div id="settings-panel">
+    <div class="settings-header">
+      <h2 class="settings-title">Settings</h2>
+      <button id="close-settings" class="close-btn">
+        &times;
+      </button>
+    </div>
+    
+    <!-- Theme Toggle -->
+    <div class="setting-group">
+      <label class="setting-label">Theme</label>
+      <button id="toggle-theme" class="glass setting-button">
+        <span id="theme-text">🌙 Dark Mode</span>
+        <span>→</span>
+      </button>
+    </div>
+    
+    <!-- UI Version Toggle -->
+    <div class="setting-group">
+      <label class="setting-label">Dashboard UI</label>
+      <div class="ui-switch-grid">
+        <button id="switch-to-old" class="glass ui-switch ui-switch-button">
+          📋 Classic UI
+        </button>
+        <button id="switch-to-new" class="glass ui-switch ui-switch-button active">
+          ✨ Pro UI
+        </button>
+      </div>
+    </div>
+    
+    <!-- Ping Interval -->
+    <div class="setting-group">
+      <label class="setting-label">Ping Interval</label>
+      <select id="ping-interval" class="glass setting-button">
+        <option value="30000">30 seconds</option>
+        <option value="60000" selected>1 minute</option>
+        <option value="300000">5 minutes</option>
+      </select>
+    </div>
+    
+    <!-- Animations Toggle -->
+    <div class="setting-group">
+      <label class="setting-checkbox-label">
+        <input type="checkbox" id="animations-toggle" checked class="setting-checkbox">
+        <span>Enable Animations</span>
+      </label>
+    </div>
+    
+    <!-- Language Selector -->
+    <div class="setting-group">
+      <label class="setting-label">Language</label>
+      <select id="language" class="glass setting-button">
+        <option value="id" selected>Bahasa Indonesia</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="min-h-screen px-4 py-6">
+    
+    <!-- Header -->
+    <section class="text-center mb-8 fade-in max-w-6xl mx-auto">
+      <div class="header-actions">
+        <div class="header-actions-spacer"></div>
+        <div class="header-buttons">
+          <!-- Notifications Button -->
+          <button id="notifications-btn" class="glass icon-button">
+            🔔
+            <span id="notif-badge" class="notification-badge">0</span>
+          </button>
+          <!-- Settings Button -->
+          <button id="settings-btn" class="glass icon-button">
+            ⚙️
+          </button>
+        </div>
+      </div>
+      
+      <!-- Logo & Title -->
+      <img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" 
+           alt="Ubuntu Logo" 
+           class="w-16 h-16 mx-auto mb-3 logo-container">
+      <h1 class="page-title">
+        Mini Server Dashboard Pro
+      </h1>
+      <p class="page-subtitle">
+        Advanced monitoring & management • by IqballFarhan
+      </p>
+    </section>
+
+    <!-- Stats Cards -->
+    <section class="max-w-6xl mx-auto mb-8 slide-up stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">
+          Total Services
+        </div>
+        <div class="stat-value" id="total-services">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          Online
+        </div>
+        <div class="stat-value online" id="online-services">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          Offline
+        </div>
+        <div class="stat-value offline" id="offline-services">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          Avg Response
+        </div>
+        <div class="stat-value accent" id="avg-latency">-- ms</div>
+      </div>
+    </section>
+
+    <!-- Search & Filter -->
+    <section class="max-w-6xl mx-auto mb-6 slide-up">
+      <div class="search-filter-container">
+        <!-- Search Input -->
+        <input 
+          id="search" 
+          type="text" 
+          placeholder="🔍 Search services..." 
+          class="search-input"
+        />
+        <!-- Filter Buttons -->
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="Public">Public</button>
+        <button class="filter-btn" data-filter="LAN">LAN</button>
+        <button class="filter-btn" data-filter="Remote">Remote</button>
+        <button class="filter-btn" data-filter="Cloud">Cloud</button>
+        <button class="filter-btn" data-filter="favorites">⭐ Favorites</button>
+      </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section id="links" class="max-w-6xl mx-auto services-grid">
+      <!-- Services will be dynamically rendered here by JavaScript -->
+    </section>
+
+    <!-- Footer -->
+    <section class="max-w-6xl mx-auto mt-10 slide-up">
+      <!-- Logout Button -->
+      <button id="logout" class="glass logout-button">
+        🚪 Logout
+      </button>
+      <!-- Copyright -->
+      <p id="copyright" class="copyright"></p>
+    </section>
+  </main>
+
+  <!-- External JavaScript -->
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
