@@ -398,7 +398,7 @@ if (localStorage.getItem('theme') === 'light') {
 document.getElementById('switch-to-old').addEventListener('click', () => {
   showToast('Switching to Classic UI...');
   setTimeout(() => {
-    window.location.href = 'index-old.html';
+    window.location.href = 'index.html';
   }, 500);
 });
 
