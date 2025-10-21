@@ -331,6 +331,25 @@ main {
   padding: 20px;
 }
 
+/* === UI Switcher === */
+.ui-switch {
+  transition: all 0.3s ease;
+}
+
+.ui-switch:hover {
+  transform: translateY(-2px);
+}
+
+.ui-switch.active {
+  background: linear-gradient(
+    135deg,
+    rgba(14, 165, 233, 0.2),
+    rgba(56, 189, 248, 0.2)
+  );
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
 /* === Scrollbar === */
 ::-webkit-scrollbar {
   width: 8px;

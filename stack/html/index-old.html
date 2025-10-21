@@ -20,6 +20,16 @@ html,body{height:100%}.glass{backdrop-filter:saturate(180%) blur(10px);backgroun
   <canvas id="stars-canvas"></canvas>
   <main class="min-h-screen px-4 py-10 flex flex-col justify-between">
     <section class="text-center mb-10 header-animate">
+      <!-- UI Switcher Button (Top Right) -->
+      <div style="position: fixed; top: 20px; right: 20px; z-index: 100;">
+        <button onclick="window.location.href='index-new.html'" 
+                class="glass rounded-xl px-4 py-2 border border-white/10 hover:border-sky-500/50 transition text-sm font-medium text-sky-400 hover:text-sky-300"
+                style="display: flex; align-items: center; gap: 8px;">
+          <span>✨</span>
+          <span>Switch to Pro UI</span>
+        </button>
+      </div>
+      
       <img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" alt="Ubuntu Logo" class="w-16 h-16 mx-auto mb-3 logo-rotate">
       <h1 class="text-2xl font-semibold text-sky-100">Mini Server Dashboard</h1>
       <p class="text-sm text-slate-400 mt-1">Kumpulan layanan aktif di server Ubuntu • by IqballFarhan</p>
