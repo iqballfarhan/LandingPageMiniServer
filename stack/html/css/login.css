@@ -1,0 +1,239 @@
+/* Base Styles */
+html, body { 
+  height:100%; 
+}
+
+.glass { 
+  backdrop-filter: saturate(180%) blur(10px); 
+  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06)); 
+}
+
+/* Page Load Animation */
+@keyframes pageLoad {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Fade In with Slide Up */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo Rotation with Glow */
+@keyframes logoGlow {
+  0%, 100% { 
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 20px rgba(234,88,12,0.6));
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.1);
+    filter: drop-shadow(0 0 30px rgba(234,88,12,0.9));
+  }
+}
+
+/* Shake Animation for Error */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Float Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+body { 
+  animation: pageLoad 0.6s ease-out; 
+}
+
+.logo-animate { 
+  animation: logoGlow 4s ease-in-out infinite; 
+}
+
+.fade-in-1 { 
+  animation: fadeInUp 0.8s ease-out 0.2s both; 
+}
+
+.fade-in-2 { 
+  animation: fadeInUp 0.8s ease-out 0.4s both; 
+}
+
+.fade-in-3 { 
+  animation: fadeInUp 0.8s ease-out 0.6s both; 
+}
+
+.shake { 
+  animation: shake 0.5s ease-in-out; 
+}
+
+.glass-card { 
+  animation: fadeInUp 0.8s ease-out, float 6s ease-in-out infinite 1s; 
+}
+
+/* Button Hover Effect */
+button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+}
+
+button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button[type="submit"]:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Stars Background */
+#stars-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Modern Loading Screen */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Spinning Logo */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-logo {
+  animation: spin 1.5s linear infinite;
+  filter: drop-shadow(0 0 30px rgba(234,88,12,0.8));
+}
+
+/* Loading Progress Bar */
+@keyframes progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.progress-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 30px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+  border-radius: 10px;
+  animation: progress 1.5s ease-out;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+/* Loading Text */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading-text {
+  margin-top: 20px;
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Modern Toast Notification */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  min-width: 300px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(220, 38, 38, 0.95));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform: translateX(400px);
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.toast.show {
+  transform: translateX(0);
+}
+
+.toast-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: white;
+}
+
+.toast-message {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.toast-close {
+  cursor: pointer;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.toast-close:hover {
+  color: white;
+}

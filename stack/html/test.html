@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Path Checker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        h1 { color: #0ea5e9; }
+        .test-item {
+            background: #2a2a2a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #666;
+        }
+        .test-item.success {
+            border-left-color: #10b981;
+        }
+        .test-item.error {
+            border-left-color: #ef4444;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.ok {
+            background: #10b981;
+            color: white;
+        }
+        .status.fail {
+            background: #ef4444;
+            color: white;
+        }
+        .path {
+            font-family: monospace;
+            background: #1a1a1a;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #38bdf8;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Path & Resource Checker</h1>
+    <p>Testing semua file CSS, JS, dan resource eksternal...</p>
+    
+    <div id="results"></div>
+
+    <script>
+        const tests = [
+            { name: 'CSS - Index', path: 'css/index.css', type: 'css' },
+            { name: 'CSS - Login', path: 'css/login.css', type: 'css' },
+            { name: 'JS - Index', path: 'js/index.js', type: 'js' },
+            { name: 'JS - Login', path: 'js/login.js', type: 'js' },
+            { name: 'HTML - Index', path: 'index.html', type: 'html' },
+            { name: 'HTML - Login', path: 'login.html', type: 'html' },
+            { name: 'Tailwind CSS (CDN)', path: 'https://cdn.tailwindcss.com', type: 'external' },
+            { name: 'Ubuntu Logo (CDN)', path: 'https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png', type: 'external' }
+        ];
+
+        const resultsDiv = document.getElementById('results');
+
+        async function testResource(test) {
+            try {
+                const response = await fetch(test.path, { 
+                    method: 'HEAD',
+                    mode: test.type === 'external' ? 'no-cors' : 'same-origin'
+                });
+                
+                // For no-cors mode, we can't check status, but if it doesn't throw, it's likely OK
+                if (test.type === 'external' || response.ok) {
+                    return { success: true, status: response.status || 'OK' };
+                }
+                return { success: false, status: response.status };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function runTests() {
+            for (const test of tests) {
+                const result = await testResource(test);
+                const div = document.createElement('div');
+                div.className = `test-item ${result.success ? 'success' : 'error'}`;
+                
+                const statusSpan = document.createElement('span');
+                statusSpan.className = `status ${result.success ? 'ok' : 'fail'}`;
+                statusSpan.textContent = result.success ? '✓ OK' : '✗ FAIL';
+                
+                div.innerHTML = `
+                    ${statusSpan.outerHTML}
+                    <strong>${test.name}</strong><br>
+                    <span class="path">${test.path}</span>
+                    ${result.error ? `<br><small style="color: #ef4444;">Error: ${result.error}</small>` : ''}
+                `;
+                
+                resultsDiv.appendChild(div);
+            }
+        }
+
+        runTests();
+    </script>
+</body>
+</html>

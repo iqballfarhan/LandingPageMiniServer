@@ -1,0 +1,227 @@
+/* Base Styles */
+html, body { 
+  height: 100%; 
+}
+
+.glass { 
+  backdrop-filter: saturate(180%) blur(10px); 
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); 
+}
+
+.ping-dot { 
+  width:10px; 
+  height:10px; 
+  border-radius:50%; 
+  display:inline-block; 
+}
+
+/* Animations */
+@keyframes ping { 
+  0% {transform: scale(1); opacity: 1;} 
+  75%,100% {transform: scale(2); opacity: 0;} 
+}
+
+.dot { 
+  position: relative; 
+}
+
+.dot::after { 
+  content:''; 
+  position:absolute; 
+  top:0; 
+  left:0; 
+  width:100%; 
+  height:100%; 
+  border-radius:50%; 
+  background:currentColor; 
+  opacity:.4; 
+  animation:ping 1.5s infinite; 
+}
+
+/* Page Load Animation */
+@keyframes pageLoad {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Fade In with Scale */
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Slide In from Bottom */
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo Rotation with Glow */
+@keyframes logoGlow {
+  0%, 100% { 
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 15px rgba(234,88,12,0.5));
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.1);
+    filter: drop-shadow(0 0 25px rgba(234,88,12,0.8));
+  }
+}
+
+/* Card Hover Scale */
+.glass:hover {
+  transform: translateY(-5px) scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* Staggered Card Animation */
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) rotateX(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+body { 
+  animation: pageLoad 0.5s ease-out;
+}
+
+.header-animate {
+  animation: fadeInScale 0.8s ease-out;
+}
+
+.logo-rotate {
+  animation: logoGlow 4s ease-in-out infinite;
+}
+
+.card-animate {
+  opacity: 0;
+  animation: cardSlideIn 0.6s ease-out forwards;
+}
+
+/* Individual card delays */
+.card-animate:nth-child(1) { animation-delay: 0.1s; }
+.card-animate:nth-child(2) { animation-delay: 0.2s; }
+.card-animate:nth-child(3) { animation-delay: 0.3s; }
+.card-animate:nth-child(4) { animation-delay: 0.4s; }
+.card-animate:nth-child(5) { animation-delay: 0.5s; }
+.card-animate:nth-child(6) { animation-delay: 0.6s; }
+.card-animate:nth-child(7) { animation-delay: 0.7s; }
+.card-animate:nth-child(8) { animation-delay: 0.8s; }
+.card-animate:nth-child(9) { animation-delay: 0.9s; }
+
+.footer-animate {
+  animation: slideInUp 0.8s ease-out 1s both;
+}
+
+/* Button ripple effect */
+#logout {
+  position: relative;
+  overflow: hidden;
+}
+
+#logout::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+#logout:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* Stars Background */
+#stars-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Modern Loading Screen */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Spinning Logo */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-logo {
+  animation: spin 1.5s linear infinite;
+  filter: drop-shadow(0 0 30px rgba(234,88,12,0.8));
+}
+
+/* Loading Progress Bar */
+@keyframes progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.progress-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 30px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+  border-radius: 10px;
+  animation: progress 1.5s ease-out;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+/* Loading Text */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading-text {
+  margin-top: 20px;
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
