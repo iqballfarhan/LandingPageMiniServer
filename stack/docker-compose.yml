@@ -12,6 +12,20 @@ services:
       echo '=== Setting up directories ===' &&
       mkdir -p /usr/share/nginx/html/css &&
       mkdir -p /usr/share/nginx/html/js &&
+      echo '=== Creating nginx config ===' &&
+      cat > /etc/nginx/conf.d/default.conf <<'NGINX_EOF'
+      server {
+          listen 80;
+          server_name _;
+          root /usr/share/nginx/html;
+          index login.html index.html;
+          
+          location / {
+              try_files \$uri \$uri/ =404;
+          }
+      }
+      NGINX_EOF
+      echo 'Nginx config created' &&
       echo '=== Downloading UI Old (Classic Dashboard) ===' &&
       curl -sSL -o /usr/share/nginx/html/index.html https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/index.html && echo 'index.html: OK' || echo 'index.html: FAILED' &&
       curl -sSL -o /usr/share/nginx/html/css/index-old.css https://raw.githubusercontent.com/iqballfarhan/LandingPageMiniServer/main/stack/html/css/index-old.css && echo 'index-old.css: OK' || echo 'index-old.css: FAILED' &&
