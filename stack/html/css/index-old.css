@@ -225,3 +225,18 @@ main {
   font-size: 14px;
   animation: pulse 1.5s ease-in-out infinite;
 }
+
+/* === UI Switcher Button === */
+.ui-switcher-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.ui-switcher-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
