@@ -89,8 +89,11 @@ const LINKS = [
   { name: "Portainer (LAN)", url: "http://192.168.1.17:9000/#!/auth", desc: "UI manajemen Docker lokal. Akses hanya dari jaringan lokal.", icon: "🛠️", tag: "LAN", ping: "/favicon.ico" },
   { name: "Beszel", url: "https://beszel.iqballfarhan.web.id/", desc: "Beszel server: monitoring & kontrol container.", icon: "📈", tag: "Public", ping: "/" },
   { name: "Speedtest", url: "https://speedtest.iqballfarhan.web.id/", desc: "LibreSpeed mandiri untuk uji jaringan.", icon: "🚀", tag: "Public", ping: "/" },
+  { name: "GitHub Heartbeat", url: "https://gh-heartbeat.iqballfarhan.web.id/", desc: "GitHub activity monitoring & contribution tracker.", icon: "💚", tag: "Public", ping: "/" },
   { name: "Web SSH Terminal", url: "https://ssh.iqballfarhan.web.id/", desc: "Akses terminal Ubuntu mini-server langsung dari browser melalui SSH Web UI.", icon: "💻", tag: "Remote", ping: "/" },
-  { name: "Cloudflare Tunnel Dashboard", url: "https://one.dash.cloudflare.com/64c507993f50bbbaca60d7df59e7486e/networks/tunnels", desc: "Panel Cloudflare Zero Trust • manajemen Argo Tunnel.", icon: "☁️", tag: "Cloud", ping: "/" }
+  { name: "Cloudflare Tunnel Dashboard", url: "https://one.dash.cloudflare.com/64c507993f50bbbaca60d7df59e7486e/networks/tunnels", desc: "Panel Cloudflare Zero Trust • manajemen Argo Tunnel.", icon: "☁️", tag: "Cloud", ping: "/" },
+  { name: "Cloudflare Access Apps", url: "https://one.dash.cloudflare.com/64c507993f50bbbaca60d7df59e7486e/access/apps", desc: "Cloudflare Access - manage protected apps.", icon: "🔐", tag: "Cloud", ping: "/" },
+  { name: "Cloudflare Caching", url: "https://dash.cloudflare.com/64c507993f50bbbaca60d7df59e7486e/iqballfarhan.web.id/caching/configuration", desc: "Caching configuration for iqballfarhan.web.id.", icon: "🗄️", tag: "Cloud", ping: "/" }
 ];
 
 const container = document.getElementById('links');

@@ -136,6 +136,14 @@ const LINKS = [
     ping: "/" 
   },
   { 
+    name: "GitHub Heartbeat", 
+    url: "https://gh-heartbeat.iqballfarhan.web.id/", 
+    desc: "GitHub activity monitoring & contribution tracker.", 
+    icon: "💚", 
+    tag: "Public", 
+    ping: "/" 
+  },
+  { 
     name: "Web SSH Terminal", 
     url: "https://ssh.iqballfarhan.web.id/", 
     desc: "Akses terminal Ubuntu mini-server.", 
@@ -148,6 +156,22 @@ const LINKS = [
     url: "https://one.dash.cloudflare.com/64c507993f50bbbaca60d7df59e7486e/networks/tunnels", 
     desc: "Panel Cloudflare Zero Trust.", 
     icon: "☁️", 
+    tag: "Cloud", 
+    ping: "/" 
+  },
+  { 
+    name: "Cloudflare Access Apps", 
+    url: "https://one.dash.cloudflare.com/64c507993f50bbbaca60d7df59e7486e/access/apps", 
+    desc: "Cloudflare Access - manage protected apps.", 
+    icon: "🔐", 
+    tag: "Cloud", 
+    ping: "/" 
+  },
+  { 
+    name: "Cloudflare Caching", 
+    url: "https://dash.cloudflare.com/64c507993f50bbbaca60d7df59e7486e/iqballfarhan.web.id/caching/configuration", 
+    desc: "Caching configuration for iqballfarhan.web.id.", 
+    icon: "🗄️", 
     tag: "Cloud", 
     ping: "/" 
   }
